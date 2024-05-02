@@ -1,0 +1,230 @@
+<!-- 7 may presentation -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/lib/codemirror.css">
+    <script src="codemirror-5.65.16/mode/python/python.js"></script>
+    <script src="codemirror-5.65.16/mode/javascript/javascript.js"></script>
+
+    <script src="codemirror-5.65.16/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.16/mode/clike/clike.js"></script>
+    <script src="codemirror-5.65.16/mode/powershell/powershell.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/dracula.css">
+    <script src="codemirror-5.65.16/addon/edit/closebrackets.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Include CodeMirror lint addon  -->
+    <script src="codemirror-5.65.16/addon/lint/lint.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/addon/lint/lint.css">
+    <!-- Include additional lint modes if needed -->
+    <script src="codemirror-5.65.16/addon/lint/javascript-lint.js"></script>
+    <script src="codemirror-5.65.16/addon/lint/css-lint.js"></script>
+    <script src="codemirror-5.65.16/addon/lint/html-lint.js"></script>
+
+    <script src="codemirror-5.65.16/addon/lint/json-lint.js"></script>
+    <!--Include linting for specific modes (e.g., Python, Java, C++) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/lint/python-lint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/lint/java-lint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/lint/cpp-lint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1//mode/javascript/javascript.min.js"></script>
+    <!--Include additional CodeMirror addons as needed -->
+    <script src="codemirror-5.65.16/addon/selection/active-line.js"></script>
+    <script src="codemirror-5.65.16/addon/display/autorefresh.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Adding Terminal -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+    </script>
+
+    <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js">
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css" />
+    
+    <!-- Include CodeMirror lint addon -->
+<script src="codemirror-5.65.16/addon/lint/lint.js"></script>
+<link rel="stylesheet" href="codemirror-5.65.16/addon/lint/lint.css">
+
+<!-- Include Pylint linting for Python -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/lint/python-lint.js"></script>
+  
+
+    <style type="text/css">
+        .terminal,
+        span,
+        .cmd,
+        div {
+            --color: rgba(0, 128, 0, 0.99);
+        }
+
+        .terminal,
+        span {
+            --size: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row m-3">
+        <div class="col">
+            <div class="d-flex justify-content-between mb-2 bg-dark rounded p-2">
+                <div class="col-12 w-25">
+                    <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+                    <select class="form-select" id="inlineFormSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="Java">Java</option>
+                        <option value="Cpp">Cpp</option>
+                        <option value="Python">Python</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success">Code-Sprint</button>
+                    <button type="button" id="run" class="btn btn-success"><i class="bi bi-play-fill"></i></button>
+                </div>
+            </div>
+            <textarea type="text" id="editor" class="form-control" aria-label="First name"></textarea>
+        </div>
+        <div class="col d-flex flex-column rounded bg-dark px-4">
+            <div class="h-50">
+                <label for="Input" class="text-light mt-4 mb-2">Input</label>
+                <textarea type="text" id="input" class="form-control h-75" aria-label="Last name"></textarea>
+            </div>
+            <div class="h-50">
+                <label for="Output" class="text-light mb-2">Output</label>
+                <textarea type="text" id="output" class="form-control h-75" aria-label="Last name"></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+        // mode: "text/x-c++src",
+        // mode: "application/x-powershell",
+        mode: "text/x-python",
+        theme: "dracula",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        autoCloseTags: true,
+        lint: true, // Enable linting
+        gutters: ["CodeMirror-lint-markers"], // Add gutter for lint markers
+
+    })
+    var width = window.innerWidth
+    var input = document.getElementById("input")
+    var output = document.getElementById("output")
+    var terminal = document.getElementsByClassName("terminal")
+    var run = document.getElementById("run")
+    editor.setSize(0.7 * width, "500")
+    var option = document.getElementById("inlineFormSelectPref")
+    option.addEventListener("change", function () {
+        if (option.value == "Java") {
+            editor.setOption("mode", "text/x-java")
+        }
+        else if (option.value == "python") {
+            editor.setOption("mode", "text/x-python")
+        }
+        else if (option.value == "javascript") {
+            editor.setOption("mode", "text/javascript")
+        }
+        else {
+            editor.setOption("mode", "text/x-c++src")
+        }
+    })
+    var code;
+
+   
+  
+    run.addEventListener("click", async function () {
+        code = {
+            code: editor.getValue(),
+            input: input.value,
+            lang: option.value
+        }
+        console.log(code)
+        var oData = await fetch("http://localhost:8000/compile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(code)
+        })
+        var d = await oData.json()
+        // $.terminal.active().echo(" C:Users ziaul OneDrive Desktop programs code editor> " + d.output)
+        output.value = d.output
+    })
+  
+
+
+    $('body').terminal({
+        iam: function (name) {
+            this.echo('Hello, ' + name +
+                '. Welcome to GeeksForGeeks');
+        },
+        founder: function () {
+            this.echo('Sandeep Jain');
+        },
+        help: function () {
+            this.echo('iam - iam command and '
+                + 'pass your name as argument\n'
+                + 'founder to know the founder');
+        },
+        clear: function () {
+            this.clear(); // Clear the terminal
+        },
+        run: function () {
+            code = {
+            code: editor.getValue(),
+            input: '', // Initialize input
+            lang: option.value
+        }
+            // Prompt for input in the terminal
+            this.push(function(command) {
+            code.input = command; // Set input
+            this.pop(); // Exit input mode
+            this.echo("Executing code...");
+                
+                // Send request to server for code execution
+                fetch("http://localhost:8000/compile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(code)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the output in the terminal
+                    this.echo(" C: \Users \ziaul \OneDrive \Desktop \programs \code \editor > " + data.output);
+                    // this.echo(data.output);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }, {
+                prompt: 'Enter input: '
+            });
+        },
+        // Define a help command
+        help: function () {
+            this.echo('run - Execute code provided as argument\n'
+                + 'help - Display available commands');
+        }
+    }, {
+            greetings: 'Code editor - A place to'
+                + ' Code DS, Algo ',
+                
+        });
+</script>
+
+</html>

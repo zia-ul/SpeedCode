@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative AI Chat</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    color: #dcd8d8;
+}
+
+h2 {
+    text-align: center;
+    color: #dcd8d8;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+}
+
+select,
+input[type="text"] {
+    width: 100%;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+  }
+
+#response {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+    text-align: center;
+} 
+
+.bottom-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 150px;
+ }
+
+    </style>
+    
+    <link rel="stylesheet" href="templates/dracula.css">
+    <head>
+        <!-- Other meta tags -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/clike/clike.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.min.js"></script>
+    </head>
+    
+</head>
+
+<body>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="visual" viewBox="0 0 900 600"
+    version="1.1">
+    <rect x="0" y="0" width="100vw" height="100vw" fill="#001220" />
+    <path
+      d="M0 372L12.5 376C25 380 50 388 75 386.5C100 385 125 374 150 364.8C175 355.7 200 348.3 225 352.8C250 357.3 275 373.7 300 372C325 370.3 350 350.7 375 340.3C400 330 425 329 450 340.5C475 352 500 376 525 389.5C550 403 575 406 600 396C625 386 650 363 675 361.2C700 359.3 725 378.7 750 387.3C775 396 800 394 825 391C850 388 875 384 887.5 382L900 380L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#fa7268" />
+    <path
+      d="M0 405L12.5 410.3C25 415.7 50 426.3 75 421.8C100 417.3 125 397.7 150 397.2C175 396.7 200 415.3 225 413C250 410.7 275 387.3 300 387.3C325 387.3 350 410.7 375 415.5C400 420.3 425 406.7 450 405C475 403.3 500 413.7 525 413.5C550 413.3 575 402.7 600 400.5C625 398.3 650 404.7 675 403.5C700 402.3 725 393.7 750 395.3C775 397 800 409 825 406.8C850 404.7 875 388.3 887.5 380.2L900 372L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#f36567" />
+    <path
+      d="M0 460L12.5 450.2C25 440.3 50 420.7 75 418.3C100 416 125 431 150 434.8C175 438.7 200 431.3 225 432.7C250 434 275 444 300 447.8C325 451.7 350 449.3 375 445.3C400 441.3 425 435.7 450 433.2C475 430.7 500 431.3 525 430.2C550 429 575 426 600 426.7C625 427.3 650 431.7 675 439.2C700 446.7 725 457.3 750 453C775 448.7 800 429.3 825 424.7C850 420 875 430 887.5 435L900 440L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#eb5967" />
+    <path
+      d="M0 443L12.5 448.5C25 454 50 465 75 471.5C100 478 125 480 150 477.3C175 474.7 200 467.3 225 467.2C250 467 275 474 300 475.5C325 477 350 473 375 465.7C400 458.3 425 447.7 450 451.3C475 455 500 473 525 481.3C550 489.7 575 488.3 600 480.7C625 473 650 459 675 451.3C700 443.7 725 442.3 750 440.7C775 439 800 437 825 446.3C850 455.7 875 476.3 887.5 486.7L900 497L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#e34c67" />
+    <path
+      d="M0 487L12.5 486C25 485 50 483 75 481C100 479 125 477 150 483.2C175 489.3 200 503.7 225 510.2C250 516.7 275 515.3 300 516.7C325 518 350 522 375 514.7C400 507.3 425 488.7 450 485.8C475 483 500 496 525 496C550 496 575 483 600 481.3C625 479.7 650 489.3 675 498.3C700 507.3 725 515.7 750 517.7C775 519.7 800 515.3 825 509.8C850 504.3 875 497.7 887.5 494.3L900 491L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#da3f67" />
+    <path
+      d="M0 517L12.5 515.7C25 514.3 50 511.7 75 512.7C100 513.7 125 518.3 150 522C175 525.7 200 528.3 225 526.2C250 524 275 517 300 515C325 513 350 516 375 516.5C400 517 425 515 450 517C475 519 500 525 525 523.5C550 522 575 513 600 516.5C625 520 650 536 675 536.7C700 537.3 725 522.7 750 516.2C775 509.7 800 511.3 825 515.3C850 519.3 875 525.7 887.5 528.8L900 532L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#d03267" />
+    <path
+      d="M0 555L12.5 559.7C25 564.3 50 573.7 75 573C100 572.3 125 561.7 150 555.8C175 550 200 549 225 549.2C250 549.3 275 550.7 300 555.8C325 561 350 570 375 572.5C400 575 425 571 450 565.7C475 560.3 500 553.7 525 551.8C550 550 575 553 600 554.8C625 556.7 650 557.3 675 560.5C700 563.7 725 569.3 750 570.8C775 572.3 800 569.7 825 566C850 562.3 875 557.7 887.5 555.3L900 553L900 601L887.5 601C875 601 850 601 825 601C800 601 775 601 750 601C725 601 700 601 675 601C650 601 625 601 600 601C575 601 550 601 525 601C500 601 475 601 450 601C425 601 400 601 375 601C350 601 325 601 300 601C275 601 250 601 225 601C200 601 175 601 150 601C125 601 100 601 75 601C50 601 25 601 12.5 601L0 601Z"
+      fill="#c62368" />
+  </svg>  
+
+    <h1>Generative AI Code-Generation</h1>
+
+            <form action="/chat" method="post">
+                <label for="model">Select Model:</label>
+                <select name="model" id="model">
+                    {% for model in models %}
+                    <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select><br><br>
+                <label for="prompt">You:</label>
+                <input type="text" name="prompt" id="prompt" placeholder="Enter your text prompt"><br><br>
+                <button type="submit">Send</button>
+            </form>
+            <section class="bottom-section">
+            <div>
+                <h2>Response:</h2>
+                <textarea id="response" rows="10" cols="50" readonly></textarea>
+            </div>
+            </section>
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script>
+
+    // Initialize CodeMirror
+    const codeEditor = CodeMirror.fromTextArea(document.getElementById('response'), {
+        mode: 'text/x-c++srct', // Specify the language mode
+        theme: "dracula",
+        lineNumbers: true,
+        readOnly: true, // Make it read-only
+    });
+
+    // Update response textarea with server response
+    document.querySelector('form').onsubmit = async function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const url = form.action;
+        const formData = new FormData(form);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.text();
+        codeEditor.setValue(result);
+    };
+    </script>
+</body>
+
+</html>
